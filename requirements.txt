@@ -1,2 +1,4 @@
 fastAPI
 uvicorn
+psycopg2
+sqlalchemy
