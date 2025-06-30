@@ -1,58 +1,108 @@
-🚀 CRUD con FastAPI, SQLAlchemy y MySQL
-Este proyecto implementa un CRUD básico con FastAPI, ahora mejorado con SQLAlchemy y MySQL para una gestión más eficiente de la base de datos.
+# 🚀 CRUD API con FastAPI + SQLAlchemy + MySQL
+Este proyecto implementa un sistema CRUD modular utilizando FastAPI, con integración de SQLAlchemy ORM, MySQL como motor de base de datos, y tests automatizados usando pytest y TestClient.
+---
+## 📌 Características principales
 
-📌 Características
-✔️ FastAPI para la creación de endpoints. ✔️ Integración con SQLAlchemy ORM para modelos de datos estructurados. ✔️ Base de datos MySQL configurada en database.py. ✔️ Operaciones CRUD con persistencia de datos en MySQL. ✔️ Swagger UI para probar los endpoints.
+- ⚡ FastAPI para creación de endpoints rápidos y tipados
 
-🔗 Acceso a Swagger UI
-Para acceder a la documentación interactiva, visita: 👉 http://127.0.0.1:8000/docs
+- 🧠 SQLAlchemy ORM para modelos de datos relacionales
 
-⚙️ Cómo ejecutar el proyecto
+- 🛡️ Validaciones avanzadas con Pydantic v2
 
-1️⃣ Clona el repositorio
-bash
+- 🐬 Persistencia con MySQL vía PyMySQL
+
+- 📑 Swagger UI y OpenAPI disponibles en /docs
+
+- 🔎 Manejo de errores detallado con HTTPException y validaciones personalizadas
+
+- ✅ Tests de integración con pytest y httpx
+
+- 🧪 Preparado para ambientes de testing con configuración desacoplada
+
+- 🔗 Acceso a la documentación interactiva
+📍 Navegá a 👉 http://127.0.0.1:8000/docs para acceder a Swagger UI
+
+# ⚙️ Instalación y ejecución
+- 1️⃣ Clonar el repositorio
+```bash
 git clone https://github.com/NicolasAndresCL/FastAPI.git
-
 cd FastAPI
-
-2️⃣ Instala las dependencias
-bash
+```
+- 2️⃣ Crear entorno virtual y activar
+```bash
+python -m venv env
+source env/bin/activate  # o .\env\Scripts\activate en Windows
+```
+- 3️⃣ Instalar dependencias
+```bash
 pip install -r requirements.txt
+```
+- 4️⃣ Configurar la base de datos
 
-3️⃣ Configura la base de datos
-Asegúrate de tener MySQL instalado.
+Asegurate de tener MySQL instalado y en ejecución.
 
-Modifica database.py para configurar la conexión.
+Creá la base de datos desde MySQL:
 
-Crea la base de datos con:
-
-sql
+```sql
 CREATE DATABASE fastapi_db;
+Modificá las credenciales en core/database.py
+```
+- 5️⃣ Ejecutar el servidor
+```bash
+uvicorn app.main:app --reload
+```
+- 🧪 También podés ejecutar directamente el main.py con:
 
-4️⃣ Ejecutar FastAPI
-Puedes iniciar el servidor con:
-
-bash
-uvicorn main:app --reload
-
-O bien, puedes agregar este bloque a main.py y ejecutarlo directamente:
-
-python
+```python
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=8000)
+    import uvicorn
+    uvicorn.run("app.main:app", port=8000, reload=True)
+```
 
-🏗️ Estructura del Proyecto
+# ✅ Mejoras recientes
+
+- 🔁 Refactorización completa de rutas y lógica de negocio
+
+- 🧩 Separación en capas: routers, schemas, repository, services, models
+
+- 📦 Tests funcionales con pytest y TestClient
+
+- 🛡️ Validaciones manuales + automáticas de entrada
+
+- 🧵 Migración a Pydantic v2 (model_dump en lugar de dict())
+
+- 📁 .gitignore actualizado y entorno virtual limpio
+
+- 💥 Test de creación de usuario pasando correctamente
+
+# 🏗️ Estructura del Proyecto
+```bash
 FastAPI/
-│── app/
-│   ├── db/
-│   │   ├── database.py  # Configuración de la conexión con MySQL
-│   │   ├── models.py    # Modelos SQLAlchemy
-│   ├── routers/
-│   │   ├── user.py      # Endpoints para la gestión de usuarios
-│   ├── schemas.py       # Definiciones Pydantic
-│── main.py              # Archivo principal de la aplicación
-│── requirements.txt      # Librerías necesarias
-│── README.md            # Documentación
+│
+├── app/
+│   ├── core/            # Configuraciones base (DB, settings)
+│   ├── models/          # Modelos SQLAlchemy
+│   ├── schemas/         # Esquemas de entrada/salida (Pydantic)
+│   ├── repository/      # Lógica de acceso a datos (CRUD)
+│   ├── routers/         # Endpoints separados por dominio
+│   ├── services/        # Reglas de negocio y helpers
+│   └── main.py          # Punto de entrada FastAPI
+│
+├── tests/               # Tests con pytest
+│   └── test_users.py
+├── requirements.txt
+└── README.md
+```
 
-📢 Mejoras recientes
-✅ Integración con MySQL usando database.py. ✅ Uso de SQLAlchemy ORM para modelos estructurados. ✅ Persistencia de datos en la base de datos, eliminando la lista en memoria. ✅ Corrección y optimización de rutas en user.py.
+# 📦 Dependencias clave
+
+```Paquete	Propósito
+fastapi	Framework principal API
+uvicorn	Servidor ASGI
+sqlalchemy	ORM
+pymysql	Driver MySQL
+httpx	Requerido por TestClient
+email-validator	Validación de campos tipo EmailStr
+cryptography	Autenticación con MySQL (caching_sha2)
+pytest	Framework de testing
+```

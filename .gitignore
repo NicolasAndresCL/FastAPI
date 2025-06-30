@@ -1,2 +1,28 @@
+# Entorno virtual
+env/
 .env
-".env" 
+.env/
+*.env
+*.env.*
+
+# Archivos temporales y de compilación
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+
+# Archivos de dependencias
+*.egg-info/
+dist/
+build/
+
+# Archivos locales (DB, OS, editores)
+*.sqlite3
+*.db
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+
