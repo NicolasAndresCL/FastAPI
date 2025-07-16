@@ -1,8 +1,8 @@
-# 🚀 CRUD API con FastAPI + SQLAlchemy + MySQL
-Este proyecto implementa un sistema CRUD modular utilizando FastAPI, con integración de SQLAlchemy ORM, MySQL como motor de base de datos, y tests automatizados usando pytest y TestClient.
+# Aplicación REST modular con FastAPI
 ---
-## 📌 Características principales
+Este proyecto implementa un sistema CRUD modular utilizando FastAPI, con integración de SQLAlchemy ORM, persistencia en MySQL y tests automatizados con Pytest + TestClient. Además, incluye una interfaz gráfica de escritorio desarrollada en Python puro (Tkinter, PySide6 y Flet) para consumir los endpoints de forma visual, y administración vía SQLAdmin.
 
+## 📌 Características principales
 - ⚡ FastAPI para creación de endpoints rápidos y tipados
 
 - 🧠 SQLAlchemy ORM para modelos de datos relacionales
@@ -15,94 +15,114 @@ Este proyecto implementa un sistema CRUD modular utilizando FastAPI, con integra
 
 - 🔎 Manejo de errores detallado con HTTPException y validaciones personalizadas
 
-- ✅ Tests de integración con pytest y httpx
+- ✅ Tests de integración con Pytest y httpx
 
 - 🧪 Preparado para ambientes de testing con configuración desacoplada
 
-- 🔗 Acceso a la documentación interactiva
-📍 Navegá a 👉 http://127.0.0.1:8000/docs para acceder a Swagger UI
+- 💻 GUI para consumo de endpoints desde escritorio
 
-# ⚙️ Instalación y ejecución
-- 1️⃣ Clonar el repositorio
-```bash
+- 🛠️ Panel administrativo con SQLAdmin
+
+## ⚙️ Instalación y ejecución
+- 1️⃣ Clonar el repositorio:
+```
+bash
 git clone https://github.com/NicolasAndresCL/FastAPI.git
 cd FastAPI
 ```
-- 2️⃣ Crear entorno virtual y activar
-```bash
+- 2️⃣ Crear entorno virtual y activar:
+```
+bash
 python -m venv env
 source env/bin/activate  # o .\env\Scripts\activate en Windows
 ```
-- 3️⃣ Instalar dependencias
-```bash
+- 3️⃣ Instalar dependencias:
+```
+bash
 pip install -r requirements.txt
 ```
-- 4️⃣ Configurar la base de datos
+- 4️⃣ Configurar la base de datos:
 
-Asegurate de tener MySQL instalado y en ejecución.
-
-Creá la base de datos desde MySQL:
-
-```sql
-CREATE DATABASE fastapi_db;
-Modificá las credenciales en core/database.py
+>Asegurate de tener MySQL instalado y en ejecución.
 ```
-- 5️⃣ Ejecutar el servidor
-```bash
+sql
+CREATE DATABASE fastapi_db;
+```
+>📌 Modificá las credenciales en db/database.py
+
+- 5️⃣ Ejecutar el servidor:
+```
+bash
 uvicorn app.main:app --reload
 ```
-- 🧪 También podés ejecutar directamente el main.py con:
+## 🧪 GUI integrada (opcional)
+>Además del API REST, el proyecto incluye interfaces gráficas para consultar los usuarios:
 
-```python
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("app.main:app", port=8000, reload=True)
+GUI	      |  Archivo	    | Framework
+:--------:|:---------------:|------
+Tkinter	  | main_tkinter.py | Python StdLib
+PySide6	  | main_pyside6.py	|Qt for Python
+Flet	  |main_flet.py	    |Flet Web/Local
+
+>Cada interfaz permite consumir endpoints como /user/ y /user/{id} desde escritorio, con estructura clara, manejo de errores y estilo profesional. Ideal para pruebas técnicas o demostraciones offline.
+
+## 🛡️ Panel administrativo con SQLAdmin
+El proyecto incluye integración con SQLAdmin, una herramienta para generar un panel de administración visual sobre modelos SQLAlchemy.
+
+▶️ Acceso:
+http
 ```
+http://127.0.0.1:8000/admin
+```
+Login por defecto
 
-# ✅ Mejoras recientes
+__Funcionalidad:__
 
-- 🔁 Refactorización completa de rutas y lógica de negocio
+- Listado y edición de usuarios
 
-- 🧩 Separación en capas: routers, schemas, repository, services, models
+- Búsqueda, creación y eliminación desde el panel
 
-- 📦 Tests funcionales con pytest y TestClient
+- Relación directa con tu ORM definido en models/
 
-- 🛡️ Validaciones manuales + automáticas de entrada
 
-- 🧵 Migración a Pydantic v2 (model_dump en lugar de dict())
-
-- 📁 .gitignore actualizado y entorno virtual limpio
-
-- 💥 Test de creación de usuario pasando correctamente
-
-# 🏗️ Estructura del Proyecto
-```bash
-FastAPI/
+## 🏗️ Estructura del Proyecto
+```
+bash
+FASTAPI/
 │
 ├── app/
-│   ├── core/            # Configuraciones base (DB, settings)
-│   ├── models/          # Modelos SQLAlchemy
-│   ├── schemas/         # Esquemas de entrada/salida (Pydantic)
-│   ├── repository/      # Lógica de acceso a datos (CRUD)
-│   ├── routers/         # Endpoints separados por dominio
-│   ├── services/        # Reglas de negocio y helpers
-│   └── main.py          # Punto de entrada FastAPI
-│
-├── tests/               # Tests con pytest
-│   └── test_users.py
-├── requirements.txt
-└── README.md
+│   ├── db/                 # Configuración de base de datos y ORM
+│   │   ├── config.py
+│   │   ├── database.py
+│   │   └── models.py
+│   ├── dependencies/       # Inyección de dependencias (autenticación, DB)
+│   ├── models/             # Modelos adicionales o compartidos
+│   ├── repository/         # Lógica CRUD desacoplada por dominio
+│   │   └── user.py
+│   ├── routers/            # Endpoints organizados por dominio
+│   │   └── user.py
+│   ├── schemas/            # Esquemas Pydantic v2 para validación y respuestas
+│   ├── tests/              # Test unitarios y funcionales (pytest + TestClient)
+│   |── main.py             # Punto de entrada principal de la API
+|   ├── main_flet.py        # Lógica adicional y helpers (incluye GUI)
+│   ├── main_pyside6.py
+│   └── main_tkinter.py│
+├── schemas.py              # Archivo raíz compartido de esquemas (legacy o común)
+├── .env                    # Variables de entorno (credenciales, configuración)
+├── requirements.txt        # Lista de dependencias para instalar
+└── env/                    # Entorno virtual local (no se sube)
 ```
 
-# 📦 Dependencias clave
-
-```Paquete	Propósito
-fastapi	Framework principal API
-uvicorn	Servidor ASGI
-sqlalchemy	ORM
-pymysql	Driver MySQL
-httpx	Requerido por TestClient
-email-validator	Validación de campos tipo EmailStr
-cryptography	Autenticación con MySQL (caching_sha2)
-pytest	Framework de testing
-```
+## 📦 Dependencias clave
+Paquete	    |Propósito
+:----------:|:---------
+fastapi	    |Framework principal API
+uvicorn	    |Servidor ASGI
+sqlalchemy	|ORM para modelos
+pymysql	    |Driver MySQL
+httpx	    |Cliente HTTP para tests
+email-validator|	Validación de campos tipo EmailStr
+cryptography	|Autenticación con MySQL
+pytest	|Framework de testing
+SQLAdmin	|Panel visual para administración de modelos
+flet, PySide6, requests	|Para interfaz gráfica local	
