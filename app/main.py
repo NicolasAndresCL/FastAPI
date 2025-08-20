@@ -11,7 +11,6 @@ from app.routers import users_router
 def create_app() -> FastAPI:
     app = FastAPI(title="FastAPI + MySQL + Alembic")
 
-    # ⚠️ QUITAR Base.metadata.create_all -> usar Alembic para migraciones
     app.include_router(users_router)
 
     class UserAdmin(ModelView, model=models.User):

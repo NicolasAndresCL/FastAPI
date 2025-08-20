@@ -1,128 +1,140 @@
-# Aplicación REST modular con FastAPI
----
-Este proyecto implementa un sistema CRUD modular utilizando FastAPI, con integración de SQLAlchemy ORM, persistencia en MySQL y tests automatizados con Pytest + TestClient. Además, incluye una interfaz gráfica de escritorio desarrollada en Python puro (Tkinter, PySide6 y Flet) para consumir los endpoints de forma visual, y administración vía SQLAdmin.
+# 🚀 Aplicación REST modular con FastAPI + Alembic + Pytest
+
+Este proyecto implementa un sistema CRUD escalable y profesional utilizando **FastAPI**, con integración de **SQLAlchemy ORM**, persistencia en **MySQL**, migraciones con **Alembic** y tests automatizados con **Pytest + TestClient**. Además, incluye una interfaz gráfica de escritorio (Tkinter, PySide6, Flet) para consumir los endpoints visualmente, y un panel administrativo vía SQLAdmin.
 
 ## 📌 Características principales
-- ⚡ FastAPI para creación de endpoints rápidos y tipados
 
-- 🧠 SQLAlchemy ORM para modelos de datos relacionales
-
-- 🛡️ Validaciones avanzadas con Pydantic v2
-
-- 🐬 Persistencia con MySQL vía PyMySQL
-
-- 📑 Swagger UI y OpenAPI disponibles en /docs
-
-- 🔎 Manejo de errores detallado con HTTPException y validaciones personalizadas
-
-- ✅ Tests de integración con Pytest y httpx
-
-- 🧪 Preparado para ambientes de testing con configuración desacoplada
-
-- 💻 GUI para consumo de endpoints desde escritorio
-
-- 🛠️ Panel administrativo con SQLAdmin
+- ⚡ **FastAPI** para endpoints rápidos, tipados y documentados
+- 🧠 **SQLAlchemy ORM** para modelos relacionales
+- 🛡️ **Pydantic v2** para validaciones avanzadas
+- 🐬 **MySQL** como motor de persistencia vía PyMySQL
+- 🔄 **Alembic** para migraciones versionadas de base de datos
+- 📑 **Swagger UI / OpenAPI** disponible en `/docs`
+- 🔎 Manejo de errores con `HTTPException` y validaciones personalizadas
+- ✅ Tests de integración con **Pytest** y **httpx**
+- 🧪 Entorno de testing reproducible con **SQLite** en memoria y fixtures aislados
+- 💻 GUI local con **Tkinter**, **PySide6** y **Flet**
+- 🛠️ Panel administrativo visual con **SQLAdmin**
 
 ## ⚙️ Instalación y ejecución
-- 1️⃣ Clonar el repositorio:
-```
-bash
-git clone https://github.com/NicolasAndresCL/FastAPI.git
-cd FastAPI
-```
-- 2️⃣ Crear entorno virtual y activar:
-```
-bash
-python -m venv env
-source env/bin/activate  # o .\env\Scripts\activate en Windows
-```
-- 3️⃣ Instalar dependencias:
-```
-bash
-pip install -r requirements.txt
-```
-- 4️⃣ Configurar la base de datos:
 
->Asegurate de tener MySQL instalado y en ejecución.
-```
-sql
-CREATE DATABASE fastapi_db;
-```
->📌 Modificá las credenciales en db/database.py
+1. **Clonar el repositorio**
+    ```bash
+    git clone https://github.com/NicolasAndresCL/FastAPI.git
+    cd FastAPI
+    ```
 
-- 5️⃣ Ejecutar el servidor:
-```
-bash
-uvicorn app.main:app --reload
-```
-## 🧪 GUI integrada (opcional)
->Además del API REST, el proyecto incluye interfaces gráficas para consultar los usuarios:
+2. **Crear entorno virtual**
+    ```bash
+    python -m venv env
+    source env/bin/activate  # o .\env\Scripts\activate en Windows
+    ```
 
-GUI	      |  Archivo	    | Framework
-:--------:|:---------------:|------
-Tkinter	  | main_tkinter.py | Python StdLib
-PySide6	  | main_pyside6.py	|Qt for Python
-Flet	  |main_flet.py	    |Flet Web/Local
+3. **Instalar dependencias**
+    ```bash
+    pip install -r requirements.txt
+    ```
 
->Cada interfaz permite consumir endpoints como /user/ y /user/{id} desde escritorio, con estructura clara, manejo de errores y estilo profesional. Ideal para pruebas técnicas o demostraciones offline.
+4. **Configurar base de datos MySQL**
+    ```sql
+    CREATE DATABASE fastapi_db;
+    ```
+    > 📌 Editar credenciales en `app/db/database.py`
+
+5. **Ejecutar servidor**
+    ```bash
+    uvicorn app.main:app --reload
+    ```
+
+## 🔄 Migraciones con Alembic
+
+Este proyecto incluye configuración completa de Alembic para versionar cambios en la base de datos.
+
+```bash
+alembic init alembic
+alembic revision --autogenerate -m "Agregar campo telefono a User"
+alembic upgrade head
+```
+
+**Archivos clave:**
+- `alembic.ini`
+- `alembic/env.py`
+- `alembic/versions/*.py`
+
+## 🧪 Testing reproducible con Pytest
+
+El entorno de pruebas usa **SQLite en memoria**, con creación y destrucción automática de tablas por test. Los fixtures están definidos en `tests/conftest.py`:
+
+- `db_session`: sesión aislada por test
+- `client`: cliente FastAPI con override de `get_db`
+- `usuario_seed`: usuario semilla reproducible
+
+```bash
+pytest -v
+```
+
+## 💻 GUI integrada (opcional)
+
+Este proyecto incluye interfaces gráficas para consumir los endpoints desde escritorio:
+
+| GUI      | Archivo           | Framework         |
+|----------|-------------------|------------------|
+| Tkinter  | main_tkinter.py   | Python StdLib    |
+| PySide6  | main_pyside6.py   | Qt for Python    |
+| Flet     | main_flet.py      | Flet Web/Local   |
+
+Cada GUI permite consultar `/user/` y `/user/{id}` con manejo de errores, estilo profesional y estructura clara. Ideal para pruebas técnicas o demostraciones offline.
 
 ## 🛡️ Panel administrativo con SQLAdmin
-El proyecto incluye integración con SQLAdmin, una herramienta para generar un panel de administración visual sobre modelos SQLAlchemy.
 
-▶️ Acceso:
-http
-```
-http://127.0.0.1:8000/admin
-```
-Login por defecto
+**Acceso:**  
+[http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
 
-__Funcionalidad:__
-
-- Listado y edición de usuarios
-
-- Búsqueda, creación y eliminación desde el panel
-
-- Relación directa con tu ORM definido en models/
-
+**Funcionalidades:**
+- Listado, búsqueda y edición de usuarios
+- Creación y eliminación desde el panel
+- Relación directa con modelos SQLAlchemy
 
 ## 🏗️ Estructura del Proyecto
-```
-bash
+
+```plaintext
 FASTAPI/
 │
 ├── app/
 │   ├── db/                 # Configuración de base de datos y ORM
-│   │   ├── config.py
 │   │   ├── database.py
-│   │   └── models.py
-│   ├── dependencies/       # Inyección de dependencias (autenticación, DB)
-│   ├── models/             # Modelos adicionales o compartidos
-│   ├── repository/         # Lógica CRUD desacoplada por dominio
-│   │   └── user.py
+│   │   ├── models.py
+│   │   └── config.py
+│   ├── repository/         # Lógica CRUD desacoplada
 │   ├── routers/            # Endpoints organizados por dominio
-│   │   └── user.py
-│   ├── schemas/            # Esquemas Pydantic v2 para validación y respuestas
-│   ├── tests/              # Test unitarios y funcionales (pytest + TestClient)
-│   |── main.py             # Punto de entrada principal de la API
-|   ├── main_flet.py        # Lógica adicional y helpers (incluye GUI)
-│   ├── main_pyside6.py
-│   └── main_tkinter.py│
-├── schemas.py              # Archivo raíz compartido de esquemas (legacy o común)
-├── .env                    # Variables de entorno (credenciales, configuración)
-├── requirements.txt        # Lista de dependencias para instalar
+│   ├── schemas/            # Validación con Pydantic v2
+│   ├── dependencies/       # Inyección de dependencias
+│   ├── tests/              # Tests con Pytest + TestClient
+│   ├── main.py             # Entrada principal de la API
+│   ├── main_flet.py        # GUI con Flet
+│   ├── main_pyside6.py     # GUI con PySide6
+│   └── main_tkinter.py     # GUI con Tkinter
+├── alembic/                # Migraciones de base de datos
+├── alembic.ini             # Configuración de Alembic
+├── requirements.txt        # Dependencias del proyecto
+├── .env                    # Variables de entorno
 └── env/                    # Entorno virtual local (no se sube)
 ```
 
 ## 📦 Dependencias clave
-Paquete	    |Propósito
-:----------:|:---------
-fastapi	    |Framework principal API
-uvicorn	    |Servidor ASGI
-sqlalchemy	|ORM para modelos
-pymysql	    |Driver MySQL
-httpx	    |Cliente HTTP para tests
-email-validator|	Validación de campos tipo EmailStr
-cryptography	|Autenticación con MySQL
-pytest	|Framework de testing
-SQLAdmin	|Panel visual para administración de modelos
-flet, PySide6, requests	|Para interfaz gráfica local	
+
+| Paquete         | Propósito                        |
+|-----------------|----------------------------------|
+| fastapi         | Framework principal API          |
+| uvicorn         | Servidor ASGI                    |
+| sqlalchemy      | ORM relacional                   |
+| pymysql         | Driver MySQL                     |
+| alembic         | Migraciones de base de datos     |
+| httpx           | Cliente HTTP para tests          |
+| pytest          | Framework de testing             |
+| email-validator | Validación de EmailStr           |
+| cryptography    | Seguridad y autenticación        |
+| SQLAdmin        | Panel visual para modelos        |
+| flet, PySide6   | GUI local multiplataforma        |
+
+Portafolio: nicolasandrescl.pythonanywhere.com
