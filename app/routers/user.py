@@ -1,7 +1,6 @@
-# app/routers/user.py
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.schemas import UserCreate, UserRead
+from app.schemas import UserCreate, UserRead, UserUpdate
 from app.db.database import get_db
 from app.repository import user as user_repo
 
@@ -18,21 +17,12 @@ def obtener_usuario(user_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
     return user
 
-@router.post("/", response_model=UserRead)
+@router.post("/", response_model=UserRead, status_code=201)
 def crear_usuario(user: UserCreate, db: Session = Depends(get_db)):
-    if len(user.nombre) < 3:
-        raise HTTPException(
-            status_code=422,
-            detail={
-                "msg": "Nombre de usuario demasiado corto",
-                "code": "USERNAME_TOO_SHORT"
-            }
-        )
-    
     return user_repo.create_user(user, db)
 
 @router.put("/{user_id}", response_model=UserRead)
-def actualizar_usuario(user_id: int, updated_user: UserCreate, db: Session = Depends(get_db)):
+def actualizar_usuario(user_id: int, updated_user: UserUpdate, db: Session = Depends(get_db)):
     user = user_repo.get_user_by_id(user_id, db)
     if not user:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")

@@ -6,25 +6,19 @@ class UsuarioGUI:
         self.ventana = tk.Tk()
         self.ventana.title("Ingreso de Usuarios")
 
-        # Etiqueta y campo de texto para el nombre de usuario
-        self.etiqueta_usuario = tk.Label(self.ventana, text="Nombre de usuario:")
-        self.etiqueta_usuario.grid(column=0, row=0)
-        self.campo_usuario = tk.Entry(self.ventana)
-        self.campo_usuario.grid(column=1, row=0)
-
         # Etiqueta y campo de texto para el ID del usuario
         self.etiqueta_id_usuario = tk.Label(self.ventana, text="ID del usuario:")
         self.etiqueta_id_usuario.grid(column=0, row=1)
         self.campo_id_usuario = tk.Entry(self.ventana)
         self.campo_id_usuario.grid(column=1, row=1)
 
-        # Botón para obtener todos los usuarios
-        self.boton_obtener_todos = tk.Button(self.ventana, text="Obtener todos los usuarios", command=self.obtener_todos_usuarios)
-        self.boton_obtener_todos.grid(column=1, row=2)
-
         # Botón para obtener un usuario por ID
         self.boton_obtener_por_id = tk.Button(self.ventana, text="Obtener usuario por ID", command=self.obtener_usuario_por_id)
         self.boton_obtener_por_id.grid(column=1, row=3)
+
+        # Botón para obtener todos los usuarios
+        self.boton_obtener_todos = tk.Button(self.ventana, text="Obtener todos los usuarios", command=self.obtener_todos_usuarios)
+        self.boton_obtener_todos.grid(column=1, row=2)
 
         # Mensaje de error
         self.mensaje_error = tk.Label(self.ventana, text="", fg="red")

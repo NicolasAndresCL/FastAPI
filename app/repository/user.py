@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from app.db.models import User
-from app.schemas import UserCreate
+from app.schemas import UserCreate, UserUpdate
 
 def get_all_users(db: Session):
     return db.query(User).all()
@@ -23,12 +23,20 @@ def create_user(user: UserCreate, db: Session):
             status_code=400,
             detail="Ya existe un usuario con ese correo electrónico."
         )
-def update_user(user: User, data: UserCreate, db: Session):
-    for key, value in data.model_dump().items():
+
+def update_user(user: User, data: UserUpdate, db: Session):
+    for key, value in data.model_dump(exclude_unset=True).items():
         setattr(user, key, value)
-    db.commit()
-    db.refresh(user)
-    return user
+    try:
+        db.commit()
+        db.refresh(user)
+        return user
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=400,
+            detail="Error al actualizar: posible correo duplicado."
+        )
 
 def delete_user(user: User, db: Session):
     db.delete(user)
